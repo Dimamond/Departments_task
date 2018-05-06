@@ -33,5 +33,52 @@
         SELECT * FROM r WHERE name != #{name} ORDER BY id;
     </select>
 
+    <select id="getChildDepartmentsByName"  parameterType="java.lang.String" resultMap = "department">
+        SELECT * FROM departments WHERE parent_id = (SELECT id FROM departments WHERE name = #{name}) ORDER BY id
+    </select>
+
+
+    <select id="getAllChildDepartmentsByName"  parameterType="java.lang.String" resultMap = "department">
+        WITH RECURSIVE r AS (
+        SELECT id, name, parent_id
+        FROM departments
+        WHERE name = #{name}
+
+        UNION
+
+        SELECT departments.id, departments.name, departments.parent_id
+        FROM departments JOIN r ON departments.parent_id = r.id
+        )
+        SELECT * FROM r WHERE name != #{name} ORDER BY id;
+    </select>
+
+    <insert id="insertDepartment" parameterType="map">
+        insert into departments (name , date_of_creation, parent_id)
+        values (#{name},#{dateOfCreation}, (SELECT id FROM departments WHERE name = #{nameParent}))
+    </insert>
+
+    <insert id="insertHeadDepartment" parameterType="map">
+        insert into departments (name , date_of_creation, parent_id)
+        values (#{name},#{dateOfCreation}, NULL)
+    </insert>
+
+    <update id="updateNameDepartment" parameterType="map">
+        UPDATE departments SET  name = #{newName} WHERE name = #{oldName};
+    </update>
+
+    <update id="updateParentDepartment" parameterType="map">
+        UPDATE departments SET  parent_id = (SELECT id FROM departments WHERE name = #{parent}) WHERE name = #{name};
+    </update>
+
+    <update id="updateDeleteParentDepartment" parameterType="java.lang.String">
+        UPDATE departments SET  parent_id = NULL WHERE name = #{name};
+    </update>
+
+    <delete id="deleteDepartment" parameterType="java.lang.String">
+        DELETE FROM departments WHERE name = #{name};
+    </delete>
+
+
+
 
 </mapper>

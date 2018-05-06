@@ -1,5 +1,6 @@
 package mybatis.mapper;
 
+import bean.Department;
 import bean.Worker;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,4 +14,5 @@ public interface WorkerMapper {
     Worker getHeadDepartmentByDepartmentName(String departmentName);
     List<Worker> getAllWorkers();
     Integer getSumSalaryWorkersDepartmentByDepartmentName(String departmentName);
+
 }

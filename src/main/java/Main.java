@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -18,8 +19,8 @@ import java.util.List;
 @ComponentScan("controller")
 public class Main implements CommandLineRunner {
 
-	private final DepartmentMapper departmentMapper;
-	private final WorkerMapper workerMapper;
+	private static DepartmentMapper departmentMapper;
+	private static WorkerMapper workerMapper;
 
 	public Main(DepartmentMapper departmentMapper, WorkerMapper workerMapper) {
 		this.departmentMapper = departmentMapper;
@@ -32,16 +33,7 @@ public class Main implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
-
-
-
-
-
-		System.out.println(workerMapper.getSumSalaryWorkersDepartmentByDepartmentName("Головной отдел"));
-
-
-
-
+		System.out.println("Hello");
+		departmentMapper.updateDeleteParentDepartment("Секретный отдел 4");
 	}
 }
