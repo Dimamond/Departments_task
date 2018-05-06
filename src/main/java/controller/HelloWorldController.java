@@ -11,7 +11,6 @@ public class HelloWorldController {
     @RequestMapping(value = "/", produces = "text/html")
     public String helloWorld(){
         System.out.println("Hello");
-
         return "hello";
     }
 
