@@ -14,6 +14,11 @@ public interface WorkerMapper {
     List<Worker> getWorkersDepartmentByDepartmentName(String departmentName);
     Worker getHeadDepartmentByDepartmentName(String departmentName);
     List<Worker> getAllWorkers();
+    List<Worker> getWorkersByBirthday(Date birthday);
+    List<Worker> getWorkersByFirstName(String firstName);
+
+    Worker getHeadByFirstNameAndLastNameWorker(@Param("firstName")String firstName, @Param("lastName")String lastName);
+
     Integer getSumSalaryWorkersDepartmentByDepartmentName(String departmentName);
     void insertWorker(@Param("firstName")String firstName, @Param("lastName")String lastName, @Param("middleName")String middleName,
                       @Param("sex")Boolean sex, @Param("birthday")Date birthday, @Param("phoneNumber") String phoneNumber,
@@ -30,8 +35,9 @@ public interface WorkerMapper {
 
     void updateDismissalWorker(@Param("firstName")String firstName, @Param("lastName")String lastName, @Param("dateOfDismissal")Date dateOfDismissal);
     void updateTransferWorker(@Param("firstName")String firstName, @Param("lastName")String lastName, @Param("nameDepartment")String nameDepartment);
-
-
+    void updateNewDepartment(@Param("oldDepartment")String oldDepartment, @Param("newDepartment")String newDepartment);
+    void updateHeadDepartment(@Param("firstName")String firstName, @Param("lastName")String lastName);
+    void deleteWorker(@Param("firstName")String firstName, @Param("lastName")String lastName);
 
 
 }

@@ -35,9 +35,9 @@ public class Main implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("Hello");
 
-		 workerMapper.updateTransferWorker("ПетрII","ПорошенкоII", "Головной отдел");
 
-
-
+		//workerMapper.updateWorker("ПетрII", "ПорошенкоII", "Петр", "Порошенко",
+		//		null, true, new Date(), "7777", "11@mail.ru", new Date(), null,
+		//		"Повар", 10000, true,"Отдел обслуживания");
 	}
 }

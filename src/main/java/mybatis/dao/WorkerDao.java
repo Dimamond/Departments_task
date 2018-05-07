@@ -1,7 +1,6 @@
 package mybatis.dao;
 
 import bean.Worker;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +41,13 @@ public class WorkerDao {
 
     public Integer getSumSalaryWorkersDepartmentByDepartmentName(String departmentName){
         return sqlSession.selectOne("getSumSalaryWorkersDepartmentByDepartmentName", departmentName);
+    }
+
+    public List<Worker> getWorkersByBirthday(Date birthday){
+        return sqlSession.selectList("getWorkersByBirthday", birthday);
+    }
+    public List<Worker> getWorkersByFirstName(String firstName){
+        return sqlSession.selectList("getWorkersByFirstName", firstName);
     }
 
     public void insertWorker(String firstName, String lastName, String middleName, Boolean sex, Date birthday,  String phoneNumber,
@@ -113,6 +119,44 @@ public class WorkerDao {
         map.put("lastName", lastName);
         map.put("nameDepartment", nameDepartment);
         sqlSession.update("updateTransferWorker", map);
+    }
+
+    public Worker getHeadByFirstNameAndLastNameWorker(String firstName, String lastName){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+
+        return sqlSession.selectOne("getHeadByFirstNameAndLastNameWorker", map);
+    }
+
+    public void deleteWorker(String firstName, String lastName){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+
+        sqlSession.delete("deleteWorker", map);
+    }
+
+    void updateNewDepartment(String oldDepartment, String newDepartment){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("oldDepartment", oldDepartment);
+        map.put("newDepartment", newDepartment);
+
+        sqlSession.update("updateNewDepartment", map);
+    }
+
+    void updateHeadDepartment(String firstName, String lastName){
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+
+        sqlSession.update("deleteWorker", map);
+
     }
 
 
