@@ -77,8 +77,4 @@
     <delete id="deleteDepartment" parameterType="java.lang.String">
         DELETE FROM departments WHERE name = #{name};
     </delete>
-
-
-
-
 </mapper>

@@ -19,8 +19,8 @@ import java.util.List;
 @ComponentScan("controller")
 public class Main implements CommandLineRunner {
 
-	private static DepartmentMapper departmentMapper;
-	private static WorkerMapper workerMapper;
+	private final DepartmentMapper departmentMapper;
+	private final WorkerMapper workerMapper;
 
 	public Main(DepartmentMapper departmentMapper, WorkerMapper workerMapper) {
 		this.departmentMapper = departmentMapper;
@@ -34,6 +34,10 @@ public class Main implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Hello");
-		departmentMapper.updateDeleteParentDepartment("Секретный отдел 4");
+
+		 workerMapper.updateTransferWorker("ПетрII","ПорошенкоII", "Головной отдел");
+
+
+
 	}
 }

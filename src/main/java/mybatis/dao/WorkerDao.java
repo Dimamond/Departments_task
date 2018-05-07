@@ -1,9 +1,11 @@
 package mybatis.dao;
 
 import bean.Worker;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,77 @@ public class WorkerDao {
 
     public Integer getSumSalaryWorkersDepartmentByDepartmentName(String departmentName){
         return sqlSession.selectOne("getSumSalaryWorkersDepartmentByDepartmentName", departmentName);
+    }
+
+    public void insertWorker(String firstName, String lastName, String middleName, Boolean sex, Date birthday,  String phoneNumber,
+                      String email, Date employmentDate, Date dateOfDismissal, String position, Integer salary, Boolean headDepartment,
+                      String nameDepartment){
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        map.put("middleName", middleName);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+        map.put("phoneNumber", phoneNumber);
+        map.put("email", email);
+        map.put("employmentDate", employmentDate);
+        map.put("dateOfDismissal", dateOfDismissal);
+        map.put("position", position);
+        map.put("salary", salary);
+        map.put("headDepartment", headDepartment);
+        map.put("nameDepartment", nameDepartment);
+
+        sqlSession.insert("insertWorker", map);
+
+    }
+
+    public void updateWorker (String oldFirstName, String oldLastName,  String firstName, String lastName, String middleName,
+                       Boolean sex, Date birthday,  String phoneNumber, String email, Date employmentDate, Date dateOfDismissal,
+                       String position, Integer salary, Boolean headDepartment, String nameDepartment){
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("oldFirstName", firstName);
+        map.put("oldLastName", lastName);
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        map.put("middleName", middleName);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+        map.put("phoneNumber", phoneNumber);
+        map.put("email", email);
+        map.put("employmentDate", employmentDate);
+        map.put("dateOfDismissal", dateOfDismissal);
+        map.put("position", position);
+        map.put("salary", salary);
+        map.put("headDepartment", headDepartment);
+        map.put("nameDepartment", nameDepartment);
+
+        sqlSession.update("updateWorker", map);
+
+
+    }
+
+
+    void updateDismissalWorker(String firstName, String lastName, Date dateOfDismissal){
+        Map<String, Object> map = new HashMap<>();
+
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        map.put("dateOfDismissal", dateOfDismissal);
+
+        sqlSession.update("updateDismissalWorker", map);
+    }
+
+    void updateTransferWorker(String firstName, String lastName, String nameDepartment){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        map.put("nameDepartment", nameDepartment);
+        sqlSession.update("updateTransferWorker", map);
     }
 
 

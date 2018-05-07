@@ -49,4 +49,38 @@
     </select>
 
 
+    <insert id="insertWorker" parameterType="map">
+        insert into workers (firstname , lastname, middlename, sex, birthday, phone_number, email, employment_date,
+        date_of_dismissal, position_id, salary, head_department, department_id)
+        values (#{firstName},#{lastName},  #{middleName} , #{sex}, #{birthday}, #{phoneNumber},
+        #{email}, #{employmentDate}, #{dateOfDismissal}, (SELECT id FROM positions WHERE position = #{position}),
+        #{salary}, #{headDepartment}, (SELECT id FROM departments WHERE name = #{nameDepartment}));
+    </insert>
+
+    <update id="updateWorker" parameterType="map">
+        UPDATE workers
+        SET firstname =  #{firstName}, lastname = #{lastName}, middlename = #{middleName}, sex = #{sex}, birthday = #{birthday},
+        phone_number =#{phoneNumber}, email = #{email}, employment_date = #{employmentDate},
+        date_of_dismissal = #{dateOfDismissal}, position_id = (SELECT id FROM positions WHERE position = #{position}), salary = #{salary},
+        head_department = #{headDepartment}, department_id = (SELECT id FROM departments WHERE name = #{nameDepartment})
+        WHERE firstname = #{oldFirstName} AND lastname = #{oldLastName};
+    </update>
+
+
+
+    <update id="updateDismissalWorker" parameterType="map">
+        UPDATE workers
+        SET date_of_dismissal = #{dateOfDismissal}
+        WHERE firstname = #{firstName} AND lastname = #{lastName};
+    </update>
+
+
+
+    <update id="updateTransferWorker" parameterType="map">
+        UPDATE workers
+        SET department_id = (SELECT id FROM departments WHERE name = #{nameDepartment})
+        WHERE firstname = #{firstName} AND lastname = #{lastName};
+    </update>
+
+
 </mapper>
