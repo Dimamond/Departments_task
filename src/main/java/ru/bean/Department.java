@@ -1,9 +1,11 @@
-package bean;
+package ru.bean;
 import java.util.Date;
+import java.util.List;
 
 public class Department {
     private String name;
     private Date dateOfCreation;
+
 
     public Department() {
     }
@@ -13,6 +15,8 @@ public class Department {
         this.dateOfCreation = new Date();
     }
 
+
+
     public String getName() {
         return name;
     }
@@ -21,6 +25,7 @@ public class Department {
         return dateOfCreation;
     }
 
+
     public void setName(String name) {
         this.name = name;
     }
@@ -28,4 +33,6 @@ public class Department {
     public void setDateOfCreation(Date dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
+
+
 }

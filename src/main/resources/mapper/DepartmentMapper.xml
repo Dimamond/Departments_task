@@ -4,77 +4,79 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="mybatis.mapper.DepartmentMapper">
+<mapper namespace="ru.mybatis.mapper.DepartmentMapper">
 
-    <resultMap id="department" type="bean.Department">
+    <resultMap id="department" type="ru.bean.Department">
         <result property="name" column="name"/>
         <result property="dateOfCreation" column="date_of_creation"/>
     </resultMap>
+
+
+
+
+
+
+    <insert id="insertDepartment" parameterType="map">
+        INSERT INTO departments (name , date_of_creation, parent_id)
+        VALUES (#{name},#{dateOfCreation}, (SELECT id FROM departments WHERE name = #{nameParent}))
+    </insert>
+
+    <update id="updateNameDepartment" parameterType="map">
+        UPDATE departments SET  name = #{newName} WHERE id = #{id};
+    </update>
+
+    <delete id="deleteDepartment" parameterType="java.lang.Long">
+        DELETE FROM departments WHERE id = #{id};
+    </delete>
+
+
+    <select id="getDepartmentById"  parameterType="java.lang.Long" resultMap = "department">
+        SELECT * FROM departments WHERE id = #{id}
+    </select>
+
+    <select id="getChildDepartmentsById"  parameterType="java.lang.Long" resultMap = "department">
+        SELECT * FROM departments WHERE parent_id = #{id} ORDER BY id
+    </select>
+
+
+
+    <select id="getAllChildDepartmentsById"  parameterType="java.lang.Long" resultMap = "department">
+        WITH RECURSIVE r AS (
+        SELECT id, name, date_of_creation, parent_id
+        FROM departments
+        WHERE id = #{id}
+
+        UNION
+
+        SELECT departments.id, departments.name, departments.date_of_creation, departments.parent_id
+        FROM departments JOIN r ON departments.parent_id = r.id
+        )
+        SELECT * FROM r WHERE id != #{id} ORDER BY id;
+    </select>
+
+    <update id="updateParentDepartment" parameterType="map">
+        UPDATE departments SET  parent_id = (SELECT id FROM departments WHERE name = #{parent}) WHERE id = #{id};
+    </update>
+
+
+
+    <select id="getParentDepartmentsById"  parameterType="java.lang.Long" resultMap = "department">
+        WITH RECURSIVE r AS (
+        SELECT id, name, date_of_creation, parent_id
+        FROM departments
+        WHERE id = #{id}
+
+        UNION
+        SELECT departments.id, departments.name, departments.date_of_creation, departments.parent_id
+        FROM departments JOIN r ON departments.id = r.parent_id
+        )
+
+        SELECT * FROM r WHERE id != #{id} ORDER BY id;
+    </select>
+
 
     <select id="getDepartmentByName"  parameterType="java.lang.String" resultMap = "department">
         select * from departments where name = #{name}
     </select>
 
-    <select id="getAllDepartments"  resultMap = "department">
-        select * from departments
-    </select>
-
-    <select id="getParentDepartmentsByName"  parameterType="java.lang.String" resultMap = "department">
-        WITH RECURSIVE r AS (
-        SELECT id, name, parent_id
-        FROM departments
-        WHERE name = #{name}
-
-        UNION
-        SELECT departments.id, departments.name, departments.parent_id
-        FROM departments JOIN r ON departments.id = r.parent_id
-        )
-
-        SELECT * FROM r WHERE name != #{name} ORDER BY id;
-    </select>
-
-    <select id="getChildDepartmentsByName"  parameterType="java.lang.String" resultMap = "department">
-        SELECT * FROM departments WHERE parent_id = (SELECT id FROM departments WHERE name = #{name}) ORDER BY id
-    </select>
-
-
-    <select id="getAllChildDepartmentsByName"  parameterType="java.lang.String" resultMap = "department">
-        WITH RECURSIVE r AS (
-        SELECT id, name, parent_id
-        FROM departments
-        WHERE name = #{name}
-
-        UNION
-
-        SELECT departments.id, departments.name, departments.parent_id
-        FROM departments JOIN r ON departments.parent_id = r.id
-        )
-        SELECT * FROM r WHERE name != #{name} ORDER BY id;
-    </select>
-
-    <insert id="insertDepartment" parameterType="map">
-        insert into departments (name , date_of_creation, parent_id)
-        values (#{name},#{dateOfCreation}, (SELECT id FROM departments WHERE name = #{nameParent}))
-    </insert>
-
-    <insert id="insertHeadDepartment" parameterType="map">
-        insert into departments (name , date_of_creation, parent_id)
-        values (#{name},#{dateOfCreation}, NULL)
-    </insert>
-
-    <update id="updateNameDepartment" parameterType="map">
-        UPDATE departments SET  name = #{newName} WHERE name = #{oldName};
-    </update>
-
-    <update id="updateParentDepartment" parameterType="map">
-        UPDATE departments SET  parent_id = (SELECT id FROM departments WHERE name = #{parent}) WHERE name = #{name};
-    </update>
-
-    <update id="updateDeleteParentDepartment" parameterType="java.lang.String">
-        UPDATE departments SET  parent_id = NULL WHERE name = #{name};
-    </update>
-
-    <delete id="deleteDepartment" parameterType="java.lang.String">
-        DELETE FROM departments WHERE name = #{name};
-    </delete>
 </mapper>

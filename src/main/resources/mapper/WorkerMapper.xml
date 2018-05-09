@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="mybatis.mapper.WorkerMapper">
+<mapper namespace="ru.mybatis.mapper.WorkerMapper">
 
-    <resultMap id="worker" type="bean.Worker">
+    <resultMap id="worker" type="ru.bean.Worker">
         <result property="firstName" column="firstname"/>
         <result property="lastName" column="lastname"/>
         <result property="middleName" column="subject"/>
@@ -22,101 +22,94 @@
 
 
 
-    <select id="getWorkerByFirstNameAndLastName"  parameterType="map" resultMap = "worker">
-        SELECT * FROM  workers w
-        JOIN positions p ON w.position_id = p.id WHERE firstname = #{firstName} and lastname = #{lastName};
+    <select id="getHeadByDepartmentId"  parameterType="java.lang.Long" resultMap = "worker">
+        SELECT * FROM  workers w JOIN positions p ON w.position_id = p.id
+        WHERE department_id = #{departmentId} AND head_department = true;
+
     </select>
 
-    <select id="getWorkersDepartmentByDepartmentName"  parameterType="java.lang.String" resultMap = "worker">
-        SELECT * FROM  workers w
-        JOIN departments d ON w.department_id = d.id WHERE name = #{departmentName} ORDER BY lastname;
+    <select id="getCountWorkersByDepartmentId"  parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT count(*) FROM  workers WHERE department_id = #{departmentId}
     </select>
 
-    <select id="getHeadDepartmentByDepartmentName"  parameterType="java.lang.String" resultMap = "worker">
-        SELECT * FROM  workers w JOIN departments d ON w.department_id = d.id
-        WHERE name = #{departmentName} AND head_department = true;
-    </select>
-
-    <select id="getAllWorkers"   resultMap = "worker">
-        SELECT * FROM  workers ORDER BY lastname;
+    <select id="getSumSalaryWorkersDepartmentByDepartmentId"  parameterType="java.lang.Long" resultType="java.lang.Integer" >
+        SELECT SUM(salary) FROM  workers WHERE department_id = #{departmentId};
     </select>
 
 
+    <select id="getWorkersDepartmentByDepartmentId"  parameterType="java.lang.Long" resultMap = "worker" >
+        SELECT * FROM  workers w JOIN positions p ON w.position_id = p.id
+        WHERE department_id = #{departmentId};
 
-    <select id="getSumSalaryWorkersDepartmentByDepartmentName"  parameterType="java.lang.String" resultType="java.lang.Integer" >
-        SELECT SUM(salary) FROM  workers w JOIN departments d ON w.department_id = d.id
-        WHERE name = #{departmentName};
     </select>
-
-
-    <select id="getWorkersByBirthday" parameterType="java.util.Date"   resultMap = "worker">
-        SELECT * FROM  workers WHERE birthday = #{birthday};
-    </select>
-
-    <select id="getWorkersByFirstName" parameterType="java.lang.String"   resultMap = "worker">
-        SELECT * FROM  workers WHERE firstname = #{firstName};
-    </select>
-
 
     <insert id="insertWorker" parameterType="map">
         insert into workers (firstname , lastname, middlename, sex, birthday, phone_number, email, employment_date,
         date_of_dismissal, position_id, salary, head_department, department_id)
         values (#{firstName},#{lastName},  #{middleName} , #{sex}, #{birthday}, #{phoneNumber},
         #{email}, #{employmentDate}, #{dateOfDismissal}, (SELECT id FROM positions WHERE position = #{position}),
-        #{salary}, #{headDepartment}, (SELECT id FROM departments WHERE name = #{nameDepartment}));
+        #{salary}, #{headDepartment}, #{departmentId});
     </insert>
+
 
     <update id="updateWorker" parameterType="map">
         UPDATE workers
         SET firstname =  #{firstName}, lastname = #{lastName}, middlename = #{middleName}, sex = #{sex}, birthday = #{birthday},
         phone_number =#{phoneNumber}, email = #{email}, employment_date = #{employmentDate},
         date_of_dismissal = #{dateOfDismissal}, position_id = (SELECT id FROM positions WHERE position = #{position}), salary = #{salary},
-        head_department = #{headDepartment}, department_id = (SELECT id FROM departments WHERE name = #{nameDepartment})
-        WHERE firstname = #{oldFirstName} AND lastname = #{oldLastName};
+        head_department = #{headDepartment} WHERE id = #{id};
     </update>
-
-
 
     <update id="updateDismissalWorker" parameterType="map">
         UPDATE workers
         SET date_of_dismissal = #{dateOfDismissal}
-        WHERE firstname = #{firstName} AND lastname = #{lastName};
+        WHERE id = #{id};
     </update>
 
+    <delete id="deleteWorker" parameterType="java.lang.Long">
+        DELETE FROM workers
+        WHERE id = #{id};
+    </delete>
 
+
+    <select id="getWorkerById"  parameterType="java.lang.Long" resultMap = "worker">
+        SELECT * FROM  workers w
+        JOIN positions p ON w.position_id = p.id WHERE id = #{id};
+    </select>
 
     <update id="updateTransferWorker" parameterType="map">
         UPDATE workers
         SET department_id = (SELECT id FROM departments WHERE name = #{nameDepartment})
-        WHERE firstname = #{firstName} AND lastname = #{lastName};
+        WHERE id = #{id};
     </update>
 
     <update id="updateNewDepartment" parameterType="map">
-        UPDATE workers SET department_id = (SELECT id FROM departments WHERE name = #{newDepartment}),
+        UPDATE workers SET department_id = (SELECT id FROM departments WHERE name = #{newDepartmentName}),
         head_department = false
-        WHERE department_id = (SELECT id FROM departments WHERE name = #{oldDepartment});
+        WHERE department_id = #{departmentId};
     </update>
 
-    <select id="getHeadByFirstNameAndLastNameWorker"  parameterType="map" resultMap = "worker">
 
-        SELECT * FROM workers
-        WHERE department_id = (SELECT department_id FROM workers WHERE firstname = #{firstName} AND lastname = #{lastName})
+
+    <select id="getHeadByIdWorker"  parameterType="java.lang.Long" resultMap = "worker">
+
+        SELECT * FROM  workers w
+        JOIN positions p ON w.position_id = p.id
+        WHERE department_id = (SELECT department_id FROM workers WHERE id = #{id})
         AND head_department = true;
-
     </select>
 
-    <delete id="deleteWorker" parameterType="map">
-        DELETE FROM workers
+
+    <select id="getWorkersByBirthday" parameterType="java.util.Date"   resultMap = "worker">
+        SELECT * FROM  workers w
+        JOIN positions p ON w.position_id = p.id
+        WHERE birthday = #{birthday};
+    </select>
+
+    <select id="getWorkersByFirstNameAndLastName" parameterType="map"   resultMap = "worker">
+        SELECT * FROM  workers w
+        JOIN positions p ON w.position_id = p.id
         WHERE firstname = #{firstName} AND lastname = #{lastName};
-    </delete>
-
-    <update id="updateHeadDepartment" parameterType="map">
-        UPDATE workers SET head_department = false
-        WHERE department_id = (SELECT department_id FROM workers WHERE  firstname = #{firstName} AND lastname = #{lastName});
-
-        UPDATE workers SET head_department = true
-        WHERE firstname = #{firstName} AND lastname = #{lastName};
-    </update>
-
+    </select>
 
 </mapper>

@@ -1,4 +1,4 @@
-package bean;
+package ru.bean;
 
 import java.util.Date;
 
@@ -20,6 +20,8 @@ public class Worker {
 
     public Worker() {
     }
+
+
 
 
     public void setFirstName(String firstName) {
@@ -69,6 +71,8 @@ public class Worker {
     public void setHeadDepartment(boolean headDepartment) {
         this.headDepartment = headDepartment;
     }
+
+
 
     public String getFirstName() {
         return firstName;
