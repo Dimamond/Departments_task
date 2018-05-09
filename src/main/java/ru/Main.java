@@ -1,5 +1,6 @@
 package ru;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.bean.Department;
 import ru.bean.Worker;
 import ru.mybatis.mapper.DepartmentMapper;
@@ -9,22 +10,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.util.List;
+import ru.service.Service;
 
 
 @SpringBootApplication
-@MapperScan(basePackages = "ru.mybatis.mapper")
 @ComponentScan
 public class Main implements CommandLineRunner {
+	@Autowired
+	private Service service;
 
-	private final DepartmentMapper departmentMapper;
-	private final WorkerMapper workerMapper;
 
-	public Main(DepartmentMapper departmentMapper, WorkerMapper workerMapper) {
-		this.departmentMapper = departmentMapper;
-		this.workerMapper = workerMapper;
-	}
 
 
 
@@ -35,11 +30,5 @@ public class Main implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-
-
-
-		//workerMapper.updateWorker("ПетрII", "ПорошенкоII", "Петр", "Порошенко",
-		//		null, true, new Date(), "7777", "11@mail.ru", new Date(), null,
-		//		"Повар", 10000, true,"Отдел обслуживания");
 	}
 }

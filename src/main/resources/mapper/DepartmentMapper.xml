@@ -76,7 +76,12 @@
 
 
     <select id="getDepartmentByName"  parameterType="java.lang.String" resultMap = "department">
-        select * from departments where name = #{name}
+        SELECT * FROM departments WHERE name = #{name}
+    </select>
+
+
+    <select id="getAllDepartments"  resultMap = "department">
+        SELECT * FROM departments
     </select>
 
 </mapper>

@@ -60,6 +60,8 @@ public class DepartmentDao {
         map.put("id", id);
         map.put("parent", parent);
         sqlSession.insert("updateParentDepartment", map);
+
+
     }
 
     public List<Department> getParentDepartmentsById(Long id){
@@ -68,6 +70,11 @@ public class DepartmentDao {
 
     public Department getDepartmentByName(String name){
         return sqlSession.selectOne("getDepartmentByName", name);
+    }
+
+
+    public List<Department> getAllDepartments(){
+        return sqlSession.selectList("getAllDepartments");
     }
 
 

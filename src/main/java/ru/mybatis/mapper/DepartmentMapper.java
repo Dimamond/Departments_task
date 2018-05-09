@@ -21,6 +21,8 @@ public interface DepartmentMapper {
     List<Department> getParentDepartmentsById(Long id);
     Department getDepartmentByName(String name);
 
+    List<Department> getAllDepartments();
+
 
 
 
