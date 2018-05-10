@@ -1,11 +1,6 @@
 package ru;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.bean.Department;
-import ru.bean.Worker;
-import ru.mybatis.mapper.DepartmentMapper;
-import ru.mybatis.mapper.WorkerMapper;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,4 +26,6 @@ public class Main implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 	}
+
+
 }

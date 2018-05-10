@@ -37,8 +37,8 @@ public class WorkerDao {
     }
 
     public void insertWorker(String firstName, String lastName, String middleName, Boolean sex, Date birthday,
-                      String phoneNumber, String email, Date employmentDate, Date dateOfDismissal,
-                      String position, Integer salary, Boolean headDepartment, Long departmentId){
+                             String phoneNumber, String email, Date employmentDate, String position, Integer salary,
+                             Boolean headDepartment, Long departmentId){
 
         Map<String, Object> map = new HashMap<>();
         map.put("firstName", firstName);
@@ -49,7 +49,6 @@ public class WorkerDao {
         map.put("phoneNumber", phoneNumber);
         map.put("email", email);
         map.put("employmentDate", employmentDate);
-        map.put("dateOfDismissal", dateOfDismissal);
         map.put("position", position);
         map.put("salary", salary);
         map.put("headDepartment", headDepartment);
@@ -134,6 +133,27 @@ public class WorkerDao {
         map.put("firstName", firstName);
         map.put("lastName", lastName);
         return sqlSession.selectList("getWorkersByFirstNameAndLastName", map);
+    }
+
+    public Integer getIdPositionByName(String name){
+        return sqlSession.selectOne("getIdPositionByName", name);
+    }
+
+    public List<Worker> getAllWorkers(){
+        return sqlSession.selectList("getAllWorkers");
+    }
+
+    public List<Worker> getAllWorkersExceptWorkerById(Long id){
+        return sqlSession.selectList("getAllWorkersExceptWorkerById", id);
+    }
+
+    public Worker getHeadByDepartmentIdExceptWorkerById(Long departmentId, Long id){
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("departmentId", departmentId);
+        map.put("id", id);
+        return sqlSession.selectOne("getHeadByDepartmentIdExceptWorkerById", map);
+
     }
 
 

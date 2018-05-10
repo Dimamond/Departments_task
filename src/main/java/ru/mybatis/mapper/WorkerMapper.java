@@ -17,9 +17,8 @@ public interface WorkerMapper {
     List<Worker> getWorkersDepartmentByDepartmentId(Long departmentId);
     void insertWorker(@Param("firstName")String firstName, @Param("lastName")String lastName, @Param("middleName")String middleName,
                       @Param("sex")Boolean sex, @Param("birthday")Date birthday, @Param("phoneNumber") String phoneNumber,
-                      @Param("email")String email, @Param("employmentDate")Date employmentDate, @Param("dateOfDismissal")Date dateOfDismissal,
-                      @Param("position")String position, @Param("salary")Integer salary, @Param("headDepartment")Boolean headDepartment,
-                      @Param("departmentId")Long departmentId);
+                      @Param("email")String email, @Param("employmentDate")Date employmentDate, @Param("position")String position,
+                      @Param("salary")Integer salary, @Param("headDepartment")Boolean headDepartment, @Param("departmentId")Long departmentId);
 
     void updateWorker(@Param("id")Long id ,@Param("firstName")String firstName, @Param("lastName")String lastName, @Param("middleName")String middleName,
                       @Param("sex")Boolean sex, @Param("birthday")Date birthday, @Param("phoneNumber") String phoneNumber,
@@ -34,6 +33,16 @@ public interface WorkerMapper {
     Worker getHeadByIdWorker(Long id);
     List<Worker> getWorkersByBirthday(Date birthday);
     List<Worker> getWorkersByFirstNameAndLastName(@Param("firstName")String firstName, @Param("lastName")String lastName);
+
+    Integer getIdPositionByName(String name);
+
+    List<Worker> getAllWorkers();
+
+    List<Worker> getAllWorkersExceptWorkerById(Long id);
+
+    Worker getHeadByDepartmentIdExceptWorkerById(@Param("departmentId")Long departmentId, @Param("id")Long id);
+
+
 
 
 

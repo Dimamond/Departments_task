@@ -13,7 +13,7 @@
         <result property="sex" column="sex"/>
         <result property="birthday" column="birthday"/>
         <result property="phoneNumber" column="phone_number"/>
-        <result property="email" column="subject"/>
+        <result property="email" column="email"/>
         <result property="employmentDate" column="employment_date"/>
         <result property="dateOfDismissal" column="date_of_dismissal"/>
         <result property="position" column="position"/>
@@ -45,9 +45,9 @@
 
     <insert id="insertWorker" parameterType="map">
         insert into workers (firstname , lastname, middlename, sex, birthday, phone_number, email, employment_date,
-        date_of_dismissal, position_id, salary, head_department, department_id)
+        position_id, salary, head_department, department_id)
         values (#{firstName},#{lastName},  #{middleName} , #{sex}, #{birthday}, #{phoneNumber},
-        #{email}, #{employmentDate}, #{dateOfDismissal}, (SELECT id FROM positions WHERE position = #{position}),
+        #{email}, #{employmentDate}, (SELECT id FROM positions WHERE position = #{position}),
         #{salary}, #{headDepartment}, #{departmentId});
     </insert>
 
@@ -73,19 +73,19 @@
 
 
     <select id="getWorkerById"  parameterType="java.lang.Long" resultMap = "worker">
-        SELECT * FROM  workers w
-        JOIN positions p ON w.position_id = p.id WHERE id = #{id};
+        SELECT * FROM  workers AS w
+        JOIN positions AS p ON w.position_id = p.id WHERE w.id = #{id};
     </select>
 
     <update id="updateTransferWorker" parameterType="map">
         UPDATE workers
-        SET department_id = (SELECT id FROM departments WHERE name = #{nameDepartment})
+        SET department_id = (SELECT id FROM departments WHERE name = #{nameDepartment}), head_department = false
         WHERE id = #{id};
     </update>
 
     <update id="updateNewDepartment" parameterType="map">
-        UPDATE workers SET department_id = (SELECT id FROM departments WHERE name = #{newDepartmentName}),
-        head_department = false
+        UPDATE workers
+        SET department_id = (SELECT id FROM departments WHERE name = #{newDepartmentName}), head_department = false
         WHERE department_id = #{departmentId};
     </update>
 
@@ -110,6 +110,29 @@
         SELECT * FROM  workers w
         JOIN positions p ON w.position_id = p.id
         WHERE firstname = #{firstName} AND lastname = #{lastName};
+    </select>
+
+
+    <select id="getIdPositionByName" parameterType="java.lang.String"   resultType="java.lang.Integer">
+        SELECT id FROM  positions WHERE position = #{name}
+    </select>
+
+    <select id="getAllWorkers"  resultMap="worker">
+        SELECT * FROM  workers w JOIN positions p ON w.position_id = p.id
+    </select>
+
+
+
+    <select id="getAllWorkersExceptWorkerById" parameterType="java.lang.Long"  resultMap="worker">
+        SELECT * FROM  workers AS w JOIN positions AS p ON w.position_id = p.id
+        WHERE w.id != #{id}
+    </select>
+
+
+    <select id="getHeadByDepartmentIdExceptWorkerById"  parameterType="map" resultMap = "worker">
+        SELECT * FROM  workers AS w JOIN positions AS p ON w.position_id = p.id
+        WHERE department_id = #{departmentId} AND head_department = true AND w.id != #{id};
+
     </select>
 
 </mapper>
