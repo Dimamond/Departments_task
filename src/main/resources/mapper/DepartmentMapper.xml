@@ -11,6 +11,28 @@
         <result property="dateOfCreation" column="date_of_creation"/>
     </resultMap>
 
+    <resultMap id="salaryFund" type="ru.bean.SalaryFund">
+        <association property="department" column="id"
+                     javaType="ru.bean.Department"
+                     select="ru.mybatis.mapper.DepartmentMapper.getDepartmentById"
+                     fetchType="eager"/>
+        <association property="salaryFund" column="id"
+                     javaType="java.lang.Integer"
+                     select="ru.mybatis.mapper.WorkerMapper.getSumSalaryWorkersDepartmentByDepartmentId"
+                     fetchType="eager"/>
+    </resultMap>
+
+
+    <resultMap id="salaryFundTable" type="ru.bean.SalaryFund">
+        <association property="department" column="department_id"
+                     javaType="ru.bean.Department"
+                     select="ru.mybatis.mapper.DepartmentMapper.getDepartmentById"
+                     fetchType="eager"/>
+        <association property="salaryFund" column="department_id"
+                     javaType="java.lang.Integer"
+                     select="ru.mybatis.mapper.DepartmentMapper.getSalaryFromSalaryFundTableByDepartmentId"
+                     fetchType="eager"/>
+    </resultMap>
 
 
 
@@ -83,5 +105,35 @@
     <select id="getAllDepartments"  resultMap = "department">
         SELECT * FROM departments
     </select>
+
+    <select id="getAllSalaryFund"  resultMap = "salaryFund">
+        SELECT * FROM departments ORDER BY id
+    </select>
+
+    <insert id="insertSalaryFund" parameterType="map">
+        INSERT INTO salary_fund_table(department_id, salary_fund)
+        VALUES ((SELECT id FROM departments WHERE name = #{nameDepartment})  ,#{salary})
+    </insert>
+
+    <update id="updateSalaryFund" parameterType="map">
+        UPDATE salary_fund_table
+        SET  salary_fund = #{salary} WHERE department_id = (SELECT id FROM departments WHERE name = #{nameDepartment});
+    </update>
+
+    <delete id="deleteSalaryFund" parameterType="java.lang.Long">
+        DELETE FROM salary_fund_table WHERE department_id = #{department_id};
+    </delete>
+
+
+    <select id="getSalaryFromSalaryFundTableByDepartmentId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        SELECT salary_fund FROM salary_fund_table WHERE department_id = #{department_id};
+    </select>
+
+
+
+    <select id="getSalaryFundFromSalaryFundTableByDepartmentName" resultMap="salaryFundTable" parameterType="java.lang.String">
+        SELECT * FROM salary_fund_table WHERE department_id = (SELECT id FROM departments WHERE name = #{nameDepartment});
+    </select>
+
 
 </mapper>

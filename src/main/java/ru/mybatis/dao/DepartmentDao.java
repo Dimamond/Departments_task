@@ -1,13 +1,13 @@
 package ru.mybatis.dao;
 
+import org.apache.ibatis.session.ResultHandler;
 import ru.bean.Department;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
+import ru.bean.SalaryFund;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Component
 public class DepartmentDao {
@@ -76,6 +76,36 @@ public class DepartmentDao {
     public List<Department> getAllDepartments(){
         return sqlSession.selectList("getAllDepartments");
     }
+
+    public List<SalaryFund> getAllSalaryFund(){
+        return sqlSession.selectList("getAllSalaryFund");
+    }
+
+
+    public void insertSalaryFund(String nameDepartment, Integer salary){
+        Map<String, Object> map = new HashMap<>();
+        map.put("nameDepartment", nameDepartment);
+        map.put("salary", salary);
+        sqlSession.insert("insertSalaryFund", map);
+    }
+    public void updateSalaryFund(String nameDepartment, Integer salary){
+        Map<String, Object> map = new HashMap<>();
+        map.put("nameDepartment", nameDepartment);
+        map.put("salary", salary);
+        sqlSession.update("updateSalaryFund", map);
+    }
+    public void deleteSalaryFund(Long department_id){
+        sqlSession.delete("deleteSalaryFund", department_id);
+    }
+
+    public int getSalaryFromSalaryFundTableByDepartmentId(Long departmentId){
+        return sqlSession.selectOne("getSalaryFromSalaryFundTableByDepartmentId", departmentId);
+    }
+
+    public SalaryFund getSalaryFundFromSalaryFundTableByDepartmentName(String departmentName){
+        return sqlSession.selectOne("getSalaryFundFromSalaryFundTableByDepartmentName", departmentName);
+    }
+
 
 
 

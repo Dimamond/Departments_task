@@ -1,11 +1,14 @@
 package ru.mybatis.mapper;
 
+
 import ru.bean.Department;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import ru.bean.SalaryFund;
 
 import java.util.Date;
 import java.util.List;
+
 
 @Mapper
 public interface DepartmentMapper {
@@ -23,7 +26,12 @@ public interface DepartmentMapper {
 
     List<Department> getAllDepartments();
 
+    List<SalaryFund> getAllSalaryFund();
 
-
+    void insertSalaryFund(@Param("nameDepartment")String nameDepartment, @Param("salary")Integer salary);
+    void updateSalaryFund(@Param("nameDepartment")String nameDepartment, @Param("salary")Integer salary);
+    void deleteSalaryFund(Long department_id);
+    int getSalaryFromSalaryFundTableByDepartmentId(Long departmentId);
+    SalaryFund getSalaryFundFromSalaryFundTableByDepartmentName(String departmentName);
 
 }

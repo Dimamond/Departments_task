@@ -19,7 +19,6 @@ import java.util.Map;
 
 
 @Component
-@MapperScan(basePackages = "ru.mybatis.mapper")
 public class Service {
 
     private final   DepartmentMapper departmentMapper;
