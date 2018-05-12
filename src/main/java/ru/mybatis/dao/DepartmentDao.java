@@ -1,6 +1,6 @@
 package ru.mybatis.dao;
 
-import org.apache.ibatis.session.ResultHandler;
+
 import ru.bean.Department;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
@@ -104,6 +104,14 @@ public class DepartmentDao {
 
     public SalaryFund getSalaryFundFromSalaryFundTableByDepartmentName(String departmentName){
         return sqlSession.selectOne("getSalaryFundFromSalaryFundTableByDepartmentName", departmentName);
+    }
+
+    void insertChangesDepartments(String departmentName, Date dateOfChange, String description){
+        Map<String, Object> map = new HashMap<>();
+        map.put("departmentName", departmentName);
+        map.put("dateOfChange", dateOfChange);
+        map.put("description", description);
+        sqlSession.insert("insertChangesDepartments", map);
     }
 
 

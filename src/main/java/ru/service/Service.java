@@ -1,6 +1,6 @@
 package ru.service;
 
-import org.mybatis.spring.annotation.MapperScan;
+
 import org.springframework.stereotype.Component;
 
 import ru.Exception.MyInvalidArgumentException;
@@ -39,31 +39,31 @@ public class Service {
         if(department == null & nameParent != null)throw new MyInvalidArgumentException("ERROR: Родительского департамента с таким наименованием не существует.");
 
         departmentMapper.insertDepartment(name,new Date(), nameParent);
+        departmentMapper.insertChangesDepartments(name, new Date(), "Департамент создан.");
     }
 
     public void renameDepartment(Long id, String name)throws Exception{
-        Department department = null;
-
-        department = departmentMapper.getDepartmentById(id);
+        Department department = departmentMapper.getDepartmentById(id);
         if(department == null)throw new MyInvalidArgumentException("ERROR: Департамент с таким id не существует.");
 
-        department = departmentMapper.getDepartmentByName(name);
-        if(department != null)throw new MyInvalidArgumentException("ERROR: Департамента с таким наименованием уже существует.");
+        Department department1 = departmentMapper.getDepartmentByName(name);
+        if(department1 != null)throw new MyInvalidArgumentException("ERROR: Департамента с таким наименованием уже существует.");
 
         departmentMapper.updateNameDepartment(id, name);
+        departmentMapper.insertChangesDepartments(name, new Date(), String.format("Департамент переименован с '%s' на '%s'.", department.getName(), name));
 
     }
 
 
     public void deleteDepartment(Long id)throws Exception{
-        Department department = null;
-        department = departmentMapper.getDepartmentById(id);
+        Department department = departmentMapper.getDepartmentById(id);
         if(department == null)throw new MyInvalidArgumentException("ERROR: Департамент с таким id и так не существует.");
         int count = workerMapper.getCountWorkersByDepartmentId(id);
 
         if(count > 0)throw new MyInvalidArgumentException("ERROR: В департаменте еще остались сотрудники.");
 
         departmentMapper.deleteDepartment(id);
+        departmentMapper.insertChangesDepartments(department.getName(), new Date(), "Департамент удален.");
 
     }
 
@@ -100,14 +100,13 @@ public class Service {
     }
 
     public void transferDepartment(Long id, String nameParent)throws Exception{
-        Department department = null;
-
-        department = departmentMapper.getDepartmentById(id);
+        Department department = departmentMapper.getDepartmentById(id);
         if(department == null)throw new MyInvalidArgumentException("ERROR: Департамент с таким id не существует.");
 
-        department = departmentMapper.getDepartmentByName(nameParent);
-        if(department == null & nameParent != null)throw new MyInvalidArgumentException("ERROR: Родительского департамента с таким наименованием не существует.");
+        Department department1 = departmentMapper.getDepartmentByName(nameParent);
+        if(department1 == null & nameParent != null)throw new MyInvalidArgumentException("ERROR: Родительского департамента с таким наименованием не существует.");
         departmentMapper.updateParentDepartment(id, nameParent);
+        departmentMapper.insertChangesDepartments(department.getName(), new Date(), String.format("У департемента новый родительский департамент '%s'.", nameParent));
     }
 
     public List<Department> selectParentDepartment(Long id)throws Exception{

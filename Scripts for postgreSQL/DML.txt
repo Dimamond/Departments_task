@@ -1,0 +1,48 @@
+
+
+INSERT INTO departments(name, date_of_creation, parent_id) VALUES ('Головной отдел', '2018-05-05', NULL);
+INSERT INTO departments(name, date_of_creation, parent_id) VALUES ('Отдел разработок', '2018-05-05', 1);
+INSERT INTO departments(name, date_of_creation, parent_id) VALUES ('Отдел качества', '2018-05-05', 2);
+INSERT INTO departments(name, date_of_creation, parent_id) VALUES ('Отдел дизайна', '2018-05-05', 2);
+INSERT INTO departments(name, date_of_creation, parent_id) VALUES ('Отдел обслуживания', '2018-05-05', 1);
+
+INSERT INTO positions(position) VALUES ('Генеральный директор');
+INSERT INTO positions(position) VALUES ('Секретарь');
+INSERT INTO positions(position) VALUES ('Разработчик');
+INSERT INTO positions(position) VALUES ('Тестировщик');
+INSERT INTO positions(position) VALUES ('Дизайнер');
+INSERT INTO positions(position) VALUES ('Уборщица');
+INSERT INTO positions(position) VALUES ('Повар');
+
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Иван', 'Адамс', true, '1977-07-07', '+7(927)111-11-11', '1@gmail.com', '2018-05-05', 1, 300000, true, 1);
+
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Наталья', 'Кочиевская', false, '1980-05-05', '+7(927)111-11-22', '12@gmail.com', '2018-05-05', 2, 30000, false, 1);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Николай', 'Бабушкин', true, '1966-06-05', '+7(927)222-22-22', '2@gmail.com', '2018-05-05', 2, 100000, true, 2);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Дмитрий', 'Вольф', true, '1990-12-05', '+7(927)333-33-33', '3@gmail.com', '2018-05-05', 2, 80000, false, 2);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Анатолий', 'Васильев', true, '1985-09-30', '+7(927)444-44-44', '4@gmail.com', '2018-05-05', 3, 80000, true, 3);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Василий', 'Максимов', true, '1999-10-12', '+7(927)555-55-55', '5@gmail.com', '2018-05-05', 3, 60000, false, 3);
+
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Анна', 'Леманн', false, '1980-09-24', '+7(927)666-66-66', '6@gmail.com', '2018-05-05', 4, 80000, true, 4);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Анастасия', 'Брейли', false, '1992-06-15', '+7(927)666-66-77', '61@gmail.com', '2018-05-05', 4,60000, false, 4);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Василиса', 'Ягужина', false, '1950-01-01', '+7(927)777-77-77', '7@gmail.com', '2018-05-05', 5, 40000, true, 5);
+
+INSERT INTO workers(firstname, lastname, sex, birthday, phone_number, email, employment_date, position_id, salary, head_department, department_id)
+VALUES ('Петр', 'Петров', true, '1955-02-11', '+7(927)777-77-88', '71@gmail.com', '2018-05-05', 5,39900, false, 5);

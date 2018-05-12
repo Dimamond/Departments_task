@@ -33,5 +33,6 @@ public interface DepartmentMapper {
     void deleteSalaryFund(Long department_id);
     int getSalaryFromSalaryFundTableByDepartmentId(Long departmentId);
     SalaryFund getSalaryFundFromSalaryFundTableByDepartmentName(String departmentName);
+    void insertChangesDepartments(@Param("departmentName")String departmentName, @Param("dateOfChange")Date dateOfChange, @Param("description")String description);
 
 }

@@ -136,4 +136,9 @@
     </select>
 
 
+    <insert id="insertChangesDepartments" parameterType="map">
+        INSERT INTO change_of_departments(department_name, date_of_change, description)
+        VALUES (#{departmentName}, #{dateOfChange} ,#{description});
+    </insert>
+
 </mapper>

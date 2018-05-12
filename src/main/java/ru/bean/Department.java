@@ -1,6 +1,6 @@
 package ru.bean;
 import java.util.Date;
-import java.util.List;
+
 
 public class Department {
     private String name;

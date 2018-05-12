@@ -1,7 +1,7 @@
 package ru.service;
 
 
-import org.mybatis.spring.annotation.MapperScan;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

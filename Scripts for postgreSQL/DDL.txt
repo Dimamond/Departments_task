@@ -1,0 +1,85 @@
+CREATE DATABASE departments_db
+  WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'Russian_Russia.1251'
+       LC_CTYPE = 'Russian_Russia.1251'
+       CONNECTION LIMIT = -1;
+
+
+
+
+CREATE TABLE positions
+(
+id bigserial NOT NULL PRIMARY KEY,
+position character varying(255) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE departments
+(
+ id bigserial NOT NULL PRIMARY KEY,
+ name character varying(255)  NOT NULL UNIQUE, 
+ date_of_creation date NOT NULL,
+ parent_id bigint,
+
+
+FOREIGN KEY (parent_id) REFERENCES
+departments(id) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE SET NULL
+ 
+);
+
+
+CREATE TABLE workers
+(
+id bigserial NOT NULL PRIMARY KEY,
+firstname character varying(255) NOT NULL,
+lastname character varying(255) NOT NULL,
+middlename character varying(255),
+sex boolean NOT NULL,
+birthday date NOT NULL,
+phone_number character varying(20) NOT NULL UNIQUE,
+email character varying(255) NOT NULL UNIQUE,
+employment_date date NOT NULL,
+date_of_dismissal date,
+position_id bigint NOT NULL,
+salary integer NOT NULL,
+head_department boolean NOT NULL,
+department_id bigint NOT NULL,
+
+CHECK(birthday < employment_date AND birthday < date_of_dismissal),
+CHECK(employment_date < date_of_dismissal),
+
+FOREIGN KEY (position_id) REFERENCES
+positions (id) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE NO ACTION,
+
+FOREIGN KEY (department_id) REFERENCES
+departments (id) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+
+
+
+ÄÎÏÎËÍÈÒÅËÜÍÛÅ ÒÐÅÁÎÂÀÍÈß
+
+CREATE TABLE salary_fund_table(
+    id bigserial NOT NULL PRIMARY KEY,
+    department_id bigint NOT NULL,
+    salary_fund bigint NOT NULL,
+
+    FOREIGN KEY (department_id) REFERENCES
+    departments(id) MATCH SIMPLE
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE change_of_departments
+(
+ id bigserial NOT NULL PRIMARY KEY,
+ department_name character varying(255)  NOT NULL, 
+ date_of_change date NOT NULL,
+ description character varying(1000)  NOT NULL
+ )
